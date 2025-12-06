@@ -16,6 +16,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
   List<String> primaryAbilities = [];
   List<String> savingThrows = [];
   List<String> skillProficiencies = [];
+  List<String> weaponProficiencies = [];
+  List<String> armorProficiencies = [];
+
   int hitdie = 0;
 
   @override

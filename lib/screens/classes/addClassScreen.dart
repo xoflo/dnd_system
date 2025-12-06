@@ -1,4 +1,4 @@
-import 'package:dndsystem/builderWidgets/globals.dart';
+
 import 'package:dndsystem/builderWidgets/hitdieSelector.dart';
 import 'package:dndsystem/builderWidgets/skillSelector.dart';
 import 'package:flutter/material.dart';

@@ -82,7 +82,7 @@ class _SkillSelectorState extends State<SkillSelector> {
             this.setState((){});
           },
           child: Container(
-            height: 60,
+            height: 40,
             width: 60,
             child: Card(
               color: widget.skills.contains(content) ? Colors.red : Colors.white,

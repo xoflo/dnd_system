@@ -1,4 +1,5 @@
 import 'package:dndsystem/screens/classes/classScreen.dart';
+import 'package:dndsystem/screens/items/itemScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -64,7 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
               ElevatedButton(onPressed: () {}, child: Text("Features")),
 
-              ElevatedButton(onPressed: () {}, child: Text("Items")),
+              ElevatedButton(onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ItemScreen()),
+                );
+              }, child: Text("Items")),
 
               ElevatedButton(onPressed: () {}, child: Text("Skills")),
 

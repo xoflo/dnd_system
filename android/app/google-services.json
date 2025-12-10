@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "714072830066",
+    "project_id": "dndsystem-bce4e",
+    "storage_bucket": "dndsystem-bce4e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714072830066:android:2f309c7fed3620eb4252eb",
+        "android_client_info": {
+          "package_name": "com.example.dndsystem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA86pb1_-lUjHLsEGM20bzeONj6d4I3Kfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -19,6 +19,10 @@ class _ClassScreenState extends State<ClassScreen> {
       body: Container(
         child: Column(
           children: [
+
+            IconButton(onPressed: (){
+              Navigator.pop(context);
+            }, icon: Icon(Icons.arrow_back)),
             Text("Classes"),
             Divider(),
             Container(

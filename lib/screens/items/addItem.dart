@@ -1,3 +1,4 @@
+import 'package:dndsystem/builderWidgets/unitSelector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   valueListenable: category,
                   builder:
                   (BuildContext context, String? value, Widget? child) {
-                    return screenBuilder(value!);
+                    return Padding(
+                      padding: EdgeInsets.all(20),
+                        child: screenBuilder(value!));
                   })
             ],
           )),
@@ -43,8 +46,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
           children: [
             card("Armor"),
             card("Tool"),
-            card("Item"),
             card("Weapon"),
+            card("Item"),
+            card("Group Item"),
           ],
         );
       },
@@ -84,10 +88,36 @@ class _AddItemScreenState extends State<AddItemScreen> {
   }
 
   itemFormat() {
+    String unit = "";
+
     return Column(
       children: [
+        TextField(
+          decoration: InputDecoration(
+            hintText: 'Item Name'
+          ),
+        ),
+        TextField(
+          maxLines: 5,
+          decoration: InputDecoration(
+              hintText: 'Description'
+          ),
+        ),
+        TextField(
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              hintText: 'Weight'
+          ),
+        ),
+        TextField(
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              hintText: 'Cost'
+          ),
+        ),
+        UnitSelector(unit: unit),
+        ElevatedButton(onPressed: () {}, child: Text("Save"))
 
-        Text("Item")
       ],
     );
   }

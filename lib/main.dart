@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ClassScreen()),
+                  MaterialPageRoute(builder: (_) => ClassScreen()),
                 );
               }, child: Text("Classes")),
 
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ItemScreen()),
+                  MaterialPageRoute(builder: (_) => ItemScreen()),
                 );
               }, child: Text("Items")),
 

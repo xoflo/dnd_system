@@ -25,6 +25,10 @@ class _ItemScreenState extends State<ItemScreen> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
+            IconButton(onPressed: (){
+              Navigator.pop(context);
+            }, icon: Icon(Icons.arrow_back)),
+
             Text("Armors"),
             Container(
               height: 300,

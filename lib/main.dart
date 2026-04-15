@@ -1,8 +1,16 @@
+import 'dart:ui';
+
 import 'package:dndsystem/screens/classes/classScreen.dart';
 import 'package:dndsystem/screens/items/itemScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -13,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      
       debugShowCheckedModeBanner: false,
       title: 'DND System',
       theme: ThemeData(
@@ -39,43 +48,54 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
 
         title: Text(widget.title),
       ),
-      body: Center(
-
-        child: Container(
-          width: 200,
-          child: Column(
-            spacing: 10,
-
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ClassScreen()),
-                );
-              }, child: Text("Classes")),
-
-              ElevatedButton(onPressed: () {}, child: Text("Origins")),
-
-              ElevatedButton(onPressed: () {}, child: Text("Features")),
-
-              ElevatedButton(onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ItemScreen()),
-                );
-              }, child: Text("Items")),
-
-              ElevatedButton(onPressed: () {}, child: Text("Skills")),
-
-
-            ],
+      body: ScrollConfiguration(
+        behavior: const MaterialScrollBehavior().copyWith(
+          dragDevices: {
+            PointerDeviceKind.mouse,    // Enable mouse dragging
+            PointerDeviceKind.touch,    // Enable touch dragging
+            PointerDeviceKind.stylus,   // Enable stylus dragging
+            PointerDeviceKind.unknown,
+          },
+        ),
+        child: Center(
+        
+          child: Container(
+            width: 200,
+            child: Column(
+              spacing: 10,
+        
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ClassScreen()),
+                  );
+                }, child: Text("Classes")),
+        
+                ElevatedButton(onPressed: () {}, child: Text("Origins")),
+        
+                ElevatedButton(onPressed: () {}, child: Text("Features")),
+        
+                ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ItemScreen()),
+                  );
+                }, child: Text("Items")),
+        
+                ElevatedButton(onPressed: () {}, child: Text("Skills")),
+        
+        
+              ],
+            ),
           ),
         ),
       ),

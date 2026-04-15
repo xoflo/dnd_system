@@ -10,10 +10,10 @@ class Item {
 
   Item.fromJSON(Map<String, dynamic> data) {
     name = data['name'];
-    weight = data['weight'];
-    cost = data['cost'];
+    weight = double.parse(data['weight'].toString() );
+    cost = int.parse(data['cost']);
     description = data['description'];
-    description = data['unit'];
+    unit = data['unit'];
   }
 
   toJSON() {

@@ -4,10 +4,10 @@ class GroupItem {
   List<Item>? items;
   String? description;
   int? cost;
-  int? weight;
+  double? weight;
 
   GroupItem(this.items, this.description, this.cost, this.weight) {
-    int accumulatedWeight = 0;
+    double accumulatedWeight = 0;
 
     items?.forEach((e) {
       if (e.weight != null){

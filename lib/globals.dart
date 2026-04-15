@@ -6,9 +6,14 @@ final firestore = FirebaseFirestore.instance;
 loadingWidget(BuildContext context) {
   return showDialog(context: context, builder: (_) => AlertDialog(
     content: Container(
-      height: 50,
-      width: 50,
-      child: CircularProgressIndicator(),
+      height: 100,
+      width: 100,
+      child: Center(
+        child: Container(
+            height: 50,
+            width: 50,
+            child: CircularProgressIndicator()),
+      ),
     )
   ));
 }

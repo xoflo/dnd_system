@@ -90,12 +90,13 @@ class _AddItemScreenState extends State<AddItemScreen> {
   }
 
   itemFormat() {
-    String unit = "";
 
     TextEditingController name = TextEditingController();
     TextEditingController desc = TextEditingController();
     TextEditingController weight = TextEditingController();
     TextEditingController cost = TextEditingController();
+
+    UnitSelector unitSelector = UnitSelector();
 
     return Column(
       children: [
@@ -126,23 +127,44 @@ class _AddItemScreenState extends State<AddItemScreen> {
               hintText: 'Cost'
           ),
         ),
-        UnitSelector(unit: unit),
+        unitSelector,
+        ElevatedButton(onPressed: () {
+          name.clear();
+          desc.clear();
+          weight.clear();
+          cost.clear();
+        }, child: Text("Clear")),
+
+        SizedBox(height: 10),
         ElevatedButton(onPressed: () async {
           loadingWidget(context);
 
+          String finalDesc = desc.text.trim().replaceAll(RegExp(r'\s+'), ' ');
+
+
           await firestore.collection("items").add({
             'name': name.text,
-            'description': desc.text,
+            'description': finalDesc,
             'weight': weight.text,
             'cost': cost.text,
-            'unit': unit
+            'unit': unitSelector.unit,
           });
+          
+          Navigator.pop(context);
+          snackbarWidget(context, "Item added to database");
+
+          name.clear();
+          desc.clear();
+          weight.clear();
+          cost.clear();
 
         }, child: Text("Save"))
+
 
       ],
     );
   }
+
 
   toolFormat() {
     return Column(

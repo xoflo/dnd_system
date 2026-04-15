@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class UnitSelector extends StatefulWidget {
-  UnitSelector({required this.unit});
+  UnitSelector({super.key});
 
-  String unit;
+  String unit = "";
 
   @override
   State<UnitSelector> createState() => _UnitSelectorState();
 }
 
 class _UnitSelectorState extends State<UnitSelector> {
+
+
   @override
   Widget build(BuildContext context) {
     return unitSelector();
@@ -38,6 +40,7 @@ class _UnitSelectorState extends State<UnitSelector> {
       ),
     );
   }
+
 
   tappableCard(String content) {
     return StatefulBuilder(

@@ -1,6 +1,7 @@
 
 class Weapon {
   String? name;
+  String? type;
   String? damage;
   List<String>? properties;
   String? mastery;

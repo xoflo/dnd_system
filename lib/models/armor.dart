@@ -1,6 +1,7 @@
 
 class Armor {
   String? name;
+  String? type;
   int? ac;
   int? strengthRequirement;
   int? weight;

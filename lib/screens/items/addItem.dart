@@ -2,6 +2,8 @@ import 'package:dndsystem/builderWidgets/unitSelector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../globals.dart';
+
 
 class AddItemScreen extends StatefulWidget {
   const AddItemScreen({super.key});
@@ -90,33 +92,53 @@ class _AddItemScreenState extends State<AddItemScreen> {
   itemFormat() {
     String unit = "";
 
+    TextEditingController name = TextEditingController();
+    TextEditingController desc = TextEditingController();
+    TextEditingController weight = TextEditingController();
+    TextEditingController cost = TextEditingController();
+
     return Column(
       children: [
         TextField(
+          controller: name,
           decoration: InputDecoration(
             hintText: 'Item Name'
           ),
         ),
         TextField(
+          controller: desc,
           maxLines: 5,
           decoration: InputDecoration(
               hintText: 'Description'
           ),
         ),
         TextField(
+          controller: weight,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
               hintText: 'Weight'
           ),
         ),
         TextField(
+          controller: cost,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
               hintText: 'Cost'
           ),
         ),
         UnitSelector(unit: unit),
-        ElevatedButton(onPressed: () {}, child: Text("Save"))
+        ElevatedButton(onPressed: () async {
+          loadingWidget(context);
+
+          await firestore.collection("items").add({
+            'name': name.text,
+            'description': desc.text,
+            'weight': weight.text,
+            'cost': cost.text,
+            'unit': unit
+          });
+
+        }, child: Text("Save"))
 
       ],
     );

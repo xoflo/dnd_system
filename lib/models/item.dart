@@ -1,17 +1,19 @@
 
 class Item {
   String? name;
-  int? weight;
+  double? weight;
   int? cost;
   String? description;
+  String? unit;
 
-  Item();
+  Item(this.name, this.description, this.cost, this.weight, this.unit);
 
   Item.fromJSON(Map<String, dynamic> data) {
     name = data['name'];
     weight = data['weight'];
     cost = data['cost'];
     description = data['description'];
+    description = data['unit'];
   }
 
   toJSON() {
@@ -20,6 +22,7 @@ class Item {
       'weight': weight,
       'cost': cost,
       'description': description,
+      'unit': unit,
     };
   }
 

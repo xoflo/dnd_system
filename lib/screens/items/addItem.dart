@@ -14,7 +14,7 @@ class AddItemScreen extends StatefulWidget {
 
 class _AddItemScreenState extends State<AddItemScreen> {
 
-  ValueNotifier<String?> category = ValueNotifier('Weapon');
+  ValueNotifier<String?> category = ValueNotifier('Armor');
 
 
   @override
@@ -139,7 +139,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
         ElevatedButton(onPressed: () async {
           loadingWidget(context);
 
-          String finalDesc = desc.text.trim().replaceAll(RegExp(r'\s+'), ' ');
+          String finalDesc = desc.text.replaceAll(RegExp(r'\s+'), ' ').trim();
 
 
           await firestore.collection("items").add({

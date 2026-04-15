@@ -128,6 +128,13 @@ class _AddItemScreenState extends State<AddItemScreen> {
           ),
         ),
         unitSelector,
+        TextField(
+          controller: cost,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              hintText: 'Storage Capacity (If applicable)'
+          ),
+        ),
         ElevatedButton(onPressed: () {
           name.clear();
           desc.clear();

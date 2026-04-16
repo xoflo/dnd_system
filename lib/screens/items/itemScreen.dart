@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dndsystem/models/groupItem.dart';
 import 'package:flutter/material.dart';
 
 import '../../globals.dart';
@@ -114,12 +115,7 @@ class _ItemScreenState extends State<ItemScreen> {
         return Column(
           children: [
             Text("Group Item"),
-            Container(
-              height: 300,
-              child: ListView.builder(itemBuilder: (context, i) {
-                return ListTile();
-              }),
-            ),
+            groupItemList()
           ],
         );
 
@@ -129,9 +125,9 @@ class _ItemScreenState extends State<ItemScreen> {
 itemsList() {
   return
     Container(
-      height: 300,
+      height: 800,
       child: StreamBuilder(
-        stream: firestore.collection("items").snapshots(),
+        stream: firestore.collection("items").orderBy('name').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           return snapshot.hasData ? ListView.builder(
             padding: EdgeInsets.all(20),
@@ -173,4 +169,65 @@ itemsList() {
         },
       ),
     );}
+
+  groupItemList() {
+    return
+      Container(
+        height: 800,
+        child: StreamBuilder(
+          stream: firestore.collection("groupItem").orderBy('name').snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            return snapshot.hasData ? ListView.builder(
+                padding: EdgeInsets.all(20),
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, i) {
+                  GroupItem groupItem = GroupItem.fromJSON(snapshot.data!.docs[i].data() as Map<String, dynamic>);
+                  return ListTile(
+                    onTap: () {
+                      showDialog(context: context, builder: (_) => AlertDialog(
+                          title: Text(groupItem.name!),
+                          content: Container(
+                              height: 300,
+                              width: 350,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Column(
+                                  children: [
+                                    Text("Description: ${groupItem.description!}"),
+                                    Text("Weight: ${groupItem.weight.toString()}"),
+                                    Text("Cost: ${groupItem.cost.toString()} ${groupItem.unit!}"),
+                                    Text("Contents: "),
+                                    Container(
+                                      height: 200,
+                                      width: 200,
+                                      child: ListView.builder(
+                                          itemCount: groupItem.items.isEmpty ? 0 : groupItem.items.length,
+                                          itemBuilder: (context, i) {
+                                            return ListTile(
+                                              title: Text(groupItem.items[i].name!),
+                                              trailing: Text(groupItem.items[i].quantity.toString(), style: TextStyle(fontSize: 15)),
+                                            );
+                                          }),
+                                    )
+                                  ],
+                                ),
+                              )
+                          )));
+                    },
+                    title: Text(groupItem.name!),
+                    trailing: IconButton(onPressed: () async {
+                      await snapshot.data!.docs[i].reference.delete();
+                      snackbarWidget(context, "Item deleted");
+                    }, icon: Icon(Icons.delete)),
+                  );
+                }) : Center(
+              child: Container(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(),
+              ),
+            );
+          },
+        ),
+      );}
 }

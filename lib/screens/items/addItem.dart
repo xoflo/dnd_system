@@ -171,6 +171,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
           desc.clear();
           weight.clear();
           cost.clear();
+          unitSelector.unit = "";
 
         }, child: Text("Save"))
 
@@ -232,7 +233,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
         SizedBox(height: 10),
         Column(
           children: [
-            Text("Added Items:", style: TextStyle(fontSize: 20),),
+            Text("Added Items:", style: TextStyle(fontSize: 20)),
             Container(
               height: 400,
               width: 400,
@@ -254,12 +255,12 @@ class _AddItemScreenState extends State<AddItemScreen> {
         ),
         Column(
           children: [
-            Text("Item List:"),
+            Text("Item List:", style: TextStyle(fontSize: 20)),
             Container(
               height: 400,
               width: 400,
               child: StreamBuilder(
-                stream: firestore.collection('items').snapshots(),
+                stream: firestore.collection('items').orderBy('name').snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   return snapshot.hasData ? ListView.builder(
                       itemCount: snapshot.data!.docs.length,
@@ -306,13 +307,26 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
           String finalDesc = desc.text.replaceAll(RegExp(r'\s+'), ' ').trim();
 
+          final totalWeight = items.value.fold<double>(
+            0,
+                (sum, e) => sum + (e.weight ?? 0),
+          );
 
-          await firestore.collection("items").add({
+          final totalCost = items.value.fold<double>(
+            0,
+                (sum, e) => sum + (e.cost ?? 0),
+          );
+
+          await firestore.collection("groupItem").add({
             'name': name.text,
             'description': finalDesc,
             'weight': weight.text,
             'cost': cost.text,
+            'totalWeight': totalWeight + double.parse(weight.text),
+            'totalCost': totalCost + double.parse(cost.text),
+            'storageCapacity': storageCapacity.text == "" ? "0" : storageCapacity.text,
             'unit': unitSelector.unit,
+            'items': items.value.map((e) => e.toJSON()).toList()
           });
 
           Navigator.pop(context);
@@ -322,6 +336,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
           desc.clear();
           weight.clear();
           cost.clear();
+          storageCapacity.clear();
 
         }, child: Text("Save"))
 

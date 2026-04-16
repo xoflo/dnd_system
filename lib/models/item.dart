@@ -3,6 +3,7 @@ class Item {
   String? name;
   double? weight;
   int? cost;
+  int quantity = 1;
   String? description;
   String? unit;
 

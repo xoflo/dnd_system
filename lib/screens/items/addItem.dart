@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dndsystem/builderWidgets/unitSelector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../globals.dart';
+import '../../models/item.dart';
 
 
 class AddItemScreen extends StatefulWidget {
@@ -72,19 +74,31 @@ class _AddItemScreenState extends State<AddItemScreen> {
               ),)));
   }
 
-  weaponFormat() {
-    return Column(
-      children: [
-        Text("Weapon")
-      ],
-    );
-  }
+
 
   armorFormat() {
     return Column(
       children: [
 
         Text("Armor")
+      ],
+    );
+  }
+
+
+  toolFormat() {
+    return Column(
+      children: [
+
+        Text("Tool")
+      ],
+    );
+  }
+
+  weaponFormat() {
+    return Column(
+      children: [
+        Text("Weapon")
       ],
     );
   }
@@ -128,13 +142,6 @@ class _AddItemScreenState extends State<AddItemScreen> {
           ),
         ),
         unitSelector,
-        TextField(
-          controller: cost,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-              hintText: 'Storage Capacity (If applicable)'
-          ),
-        ),
         ElevatedButton(onPressed: () {
           name.clear();
           desc.clear();
@@ -173,20 +180,152 @@ class _AddItemScreenState extends State<AddItemScreen> {
   }
 
 
-  toolFormat() {
-    return Column(
-      children: [
-
-        Text("Tool")
-      ],
-    );
-  }
-
   groupItemFormat() {
+    TextEditingController name = TextEditingController();
+    TextEditingController desc = TextEditingController();
+    TextEditingController weight = TextEditingController();
+    TextEditingController cost = TextEditingController();
+    TextEditingController storageCapacity = TextEditingController();
+
+    UnitSelector unitSelector = UnitSelector();
+
+    ValueNotifier<List<Item>> items = ValueNotifier([]);
+
+
     return Column(
       children: [
+        TextField(
+          controller: name,
+          decoration: InputDecoration(
+              hintText: 'Group Item Name'
+          ),
+        ),
+        TextField(
+          controller: desc,
+          maxLines: 5,
+          decoration: InputDecoration(
+              hintText: 'Description'
+          ),
+        ),
+        TextField(
+          controller: weight,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              hintText: 'Weight'
+          ),
+        ),
+        TextField(
+          controller: cost,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              hintText: 'Cost'
+          ),
+        ),
+        unitSelector,
+        TextField(
+          controller: storageCapacity,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              hintText: 'Storage Capacity (if applicable)'
+          ),
+        ),
+        SizedBox(height: 10),
+        Column(
+          children: [
+            Text("Added Items:", style: TextStyle(fontSize: 20),),
+            Container(
+              height: 400,
+              width: 400,
+              child: ValueListenableBuilder(
+                valueListenable: items,
+                builder: (BuildContext context, List<Item> value, Widget? child) {
+                  return ListView.builder(
+                      itemCount: value.length,
+                      itemBuilder: (context, i) {
+                        return ListTile(
+                          title: Text(value[i].name!),
+                          trailing: Text(value[i].quantity.toString(), style: TextStyle(fontSize: 15)),
+                        );
+                      });
+                },
+              ),
+            )
+          ],
+        ),
+        Column(
+          children: [
+            Text("Item List:"),
+            Container(
+              height: 400,
+              width: 400,
+              child: StreamBuilder(
+                stream: firestore.collection('items').snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  return snapshot.hasData ? ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, i) {
+                        final item = Item.fromJSON(snapshot.data!.docs[i].data() as Map<String, dynamic>);
 
-        Text("Group")
+                        return ListTile(
+                          title: Text(item.name!),
+                          onTap: () {
+                            List<Item> newItems = [];
+                            newItems = items.value.toList();
+
+                            if (newItems.contains(item)) {
+                              newItems[newItems.indexOf(item)].quantity++;
+                            } else {
+                              newItems.add(item);
+                            }
+
+                            items.value = newItems;
+                          },
+                        );
+                      }) : Center(
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+        ElevatedButton(onPressed: () {
+          name.clear();
+          desc.clear();
+          weight.clear();
+          cost.clear();
+        }, child: Text("Clear")),
+
+        SizedBox(height: 10),
+        ElevatedButton(onPressed: () async {
+          loadingWidget(context);
+
+          String finalDesc = desc.text.replaceAll(RegExp(r'\s+'), ' ').trim();
+
+
+          await firestore.collection("items").add({
+            'name': name.text,
+            'description': finalDesc,
+            'weight': weight.text,
+            'cost': cost.text,
+            'unit': unitSelector.unit,
+          });
+
+          Navigator.pop(context);
+          snackbarWidget(context, "Item added to database");
+
+          name.clear();
+          desc.clear();
+          weight.clear();
+          cost.clear();
+
+        }, child: Text("Save"))
+
+
       ],
     );
   }

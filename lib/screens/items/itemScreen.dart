@@ -158,6 +158,10 @@ itemsList() {
                         )));
                   },
                   title: Text(item.name!),
+                  trailing: IconButton(onPressed: () async {
+                    await snapshot.data!.docs[i].reference.delete();
+                    snackbarWidget(context, "Item deleted");
+                  }, icon: Icon(Icons.delete)),
                 );
               }) : Center(
             child: Container(

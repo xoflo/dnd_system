@@ -194,12 +194,12 @@ itemsList() {
                                 child: Column(
                                   children: [
                                     Text("Description: ${groupItem.description!}"),
-                                    Text("Weight: ${groupItem.weight.toString()}"),
-                                    Text("Cost: ${groupItem.cost.toString()} ${groupItem.unit!}"),
+                                    Text("Weight: ${groupItem.totalWeight.toString()} lb"),
+                                    Text("Cost: ${groupItem.totalCost.toString()}"),
                                     Text("Contents: "),
                                     Container(
                                       height: 200,
-                                      width: 200,
+                                      width: 250,
                                       child: ListView.builder(
                                           itemCount: groupItem.items.isEmpty ? 0 : groupItem.items.length,
                                           itemBuilder: (context, i) {

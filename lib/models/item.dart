@@ -11,10 +11,11 @@ class Item {
 
   Item.fromJSON(Map<String, dynamic> data) {
     name = data['name'];
-    weight = double.parse(data['weight'].toString() );
-    cost = int.parse(data['cost']);
+    weight = data['weight'].toString() == "" ? 0 : double.parse(data['weight'].toString() );
+    cost = int.parse(data['cost'].toString());
     description = data['description'];
     unit = data['unit'];
+    quantity = data['quantity'] ?? 1;
   }
 
   toJSON() {
@@ -24,6 +25,7 @@ class Item {
       'cost': cost,
       'description': description,
       'unit': unit,
+      'quantity': quantity,
     };
   }
 

@@ -337,6 +337,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
           weight.clear();
           cost.clear();
           storageCapacity.clear();
+          items.value = [];
 
         }, child: Text("Save"))
 

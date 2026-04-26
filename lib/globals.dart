@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 final firestore = FirebaseFirestore.instance;
 
 loadingWidget(BuildContext context) {
-  return showDialog(context: context, builder: (_) => AlertDialog(
+  return showDialog(
+      barrierDismissible: false,
+      context: context, builder: (_) => AlertDialog(
     content: Container(
       height: 100,
       width: 100,

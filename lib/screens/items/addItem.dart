@@ -135,18 +135,17 @@ class _AddItemScreenState extends State<AddItemScreen> {
             'name': name.text,
             'description': desc.text,
             'weight': weightController.text,
-            'stat': stat[0],
+            'stat': stat.last,
             'cost': costController.text,
             'unit': unit.unit
-          }).then((value) {
-            name.clear();
-            desc.clear();
-            weightController.clear();
-            costController.clear();
-            stat = [];
-            unit.unit = "";
           });
 
+          name.clear();
+          desc.clear();
+          weightController.clear();
+          costController.clear();
+          stat.clear();
+          unit.unit = "";
 
           Navigator.pop(context);
           snackbarWidget(context, "Tool Added");

@@ -97,10 +97,50 @@ class _ItemScreenState extends State<ItemScreen> {
           children: [
             Text("Tools"),
             Container(
-              height: 300,
-              child: ListView.builder(itemBuilder: (context, i) {
-                return ListTile();
-              }),
+              height: 700,
+              child: StreamBuilder(
+                stream: firestore.collection('tools').orderBy('name').snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  return !snapshot.hasData ? Center(
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                    ),
+                  ) : Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, i) {
+                    return ListTile(
+                      onTap: () {
+                        showDialog(context: context, builder: (_) => AlertDialog(
+                          content: Container(
+                            height: 300,
+                            width: 300,
+                            child: Column(
+                              children: [
+                                Text("Name: ${snapshot.data!.docs[i]['name']}"),
+                                Text("Description: ${snapshot.data!.docs[i]['description']}"),
+                                Text("Weight: ${snapshot.data!.docs[i]['weight']}"),
+                                Text("Stat: ${snapshot.data!.docs[i]['stat']}"),
+                                Text("Cost: ${snapshot.data!.docs[i]['cost']} ${snapshot.data!.docs[i]['unit']}"),
+                              ],
+                            ),
+                          ),
+                        ));
+                      },
+                    title: Text("${snapshot.data!.docs[i]['name']}"),
+                      trailing: IconButton(onPressed: () async {
+                        await snapshot.data!.docs[i].reference.delete();
+                        snackbarWidget(context, "Tool deleted");
+                      }, icon: Icon(Icons.delete)),
+                    );
+                    }),
+                  );
+
+
+                },
+              ),
             ),
           ],
         );

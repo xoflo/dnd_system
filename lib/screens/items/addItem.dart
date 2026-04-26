@@ -108,6 +108,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
         StatSelector(stat: stat, statDesc: statDesc),
         TextField(
           controller: desc,
+          onChanged: (value) {
+
+            desc.text = desc.text.replaceAll(RegExp(r'\s+'), ' ').trim();
+          },
           maxLines: 5,
           decoration: InputDecoration(
               hintText: 'Description'
@@ -129,6 +133,21 @@ class _AddItemScreenState extends State<AddItemScreen> {
           ),
         ),
         SizedBox(height: 10),
+        ElevatedButton(
+          onPressed: () {
+            name.clear();
+            desc.clear();
+            weightController.clear();
+            costController.clear();
+            stat.clear();
+            unit.unit = "";
+
+            setState(() {
+              category.value = "Tool";
+            });
+          }, child: Text("Clear")
+        ),
+        SizedBox(height: 10),
         ElevatedButton(onPressed: () async {
           loadingWidget(context);
           await firestore.collection('tools').add({
@@ -147,8 +166,13 @@ class _AddItemScreenState extends State<AddItemScreen> {
           stat.clear();
           unit.unit = "";
 
+
           Navigator.pop(context);
           snackbarWidget(context, "Tool Added");
+
+          setState(() {
+            category.value = "Tool";
+          });
         }, child: Text("Save"))
       ],
     );

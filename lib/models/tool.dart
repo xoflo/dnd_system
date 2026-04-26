@@ -7,10 +7,6 @@ class Tool {
   int? weight;
   int? cost;
 
-
-  Tool();
-
-
   Tool.fromJSON(Map<String, dynamic> data) {
     name = data['name'];
     stat = data['stat'];
@@ -20,15 +16,5 @@ class Tool {
     cost = data['cost'];
   }
 
-  toJSON() {
-    return {
-      'name': name,
-      'stat': stat,
-      'purpose': purpose,
-      'products': products,
-      'weight': weight,
-      'cost': cost,
-    };
-  }
 
 }

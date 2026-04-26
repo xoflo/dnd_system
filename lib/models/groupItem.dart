@@ -51,9 +51,11 @@ class GroupItem {
     cost = double.parse(data['cost']);
     weight = double.parse(data['weight']);
     unit = data['unit'];
-    storageCapacity = double.parse(data['storageCapacity']);
+    storageCapacity = double.parse(data['storageCapacity'] ?? "0");
 
-    if (data['items'] != []) {
+    final List<dynamic>? list = data['items'];
+
+    if (list != null) {
       data['items'].forEach((e) {
         items.add(Item.fromJSON(e));
       });

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dndsystem/builderWidgets/statSelector.dart';
 import 'package:dndsystem/builderWidgets/unitSelector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -87,10 +88,69 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
 
   toolFormat() {
+    List<String> stat = [];
+    String statDesc = "Ability";
+    TextEditingController name = TextEditingController();
+    TextEditingController weightController = TextEditingController();
+    TextEditingController costController = TextEditingController();
+    TextEditingController desc = TextEditingController();
+    UnitSelector unit = UnitSelector();
+
     return Column(
       children: [
+        Text("Tool"),
+        TextField(
+          controller: name,
+          decoration: InputDecoration(
+              hintText: 'Tool Name'
+          )
+        ),
+        StatSelector(stat: stat, statDesc: statDesc),
+        TextField(
+          controller: desc,
+          maxLines: 5,
+          decoration: InputDecoration(
+              hintText: 'Description'
+          ),
+        ),
+        TextField(
+          controller: costController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              hintText: 'Cost'
+          ),
+        ),
+        unit,
+        TextField(
+          controller: weightController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              hintText: 'Weight'
+          ),
+        ),
+        SizedBox(height: 10),
+        ElevatedButton(onPressed: () async {
+          loadingWidget(context);
+          await firestore.collection('tools').add({
+            'name': name.text,
+            'description': desc.text,
+            'weight': weightController.text,
+            'stat': stat[0],
+            'cost': costController.text,
+            'unit': unit.unit
+          }).then((value) {
+            name.clear();
+            desc.clear();
+            weightController.clear();
+            costController.clear();
+            stat = [];
+            unit.unit = "";
+          });
 
-        Text("Tool")
+
+          Navigator.pop(context);
+          snackbarWidget(context, "Tool Added");
+        }, child: Text("Save"))
       ],
     );
   }
